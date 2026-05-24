@@ -30,12 +30,12 @@ JavaFX-приложение для управления аптекой с исп
 - Git
 
 Проверить установку можно командами:
-
+```
 java -version
 mvn -version
 docker --version
 git --version
-
+```
 
 # Клонирование проекта
 
