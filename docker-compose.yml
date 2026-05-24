@@ -1,13 +1,19 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15
+
     environment:
       POSTGRES_DB: pharmacy_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 0000
+
     ports:
-      - "5432:5432"
+      - "5433:5432"
+
     volumes:
-      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+      - ./init-user.sql:/docker-entrypoint-initdb.d/init-user.sql
+
+volumes:
+  postgres_data:

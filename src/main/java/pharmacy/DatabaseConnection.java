@@ -31,7 +31,10 @@ public class DatabaseConnection {
             sqlserverPassword = props.getProperty("sqlserver.password");
 
             currentDbType = props.getProperty("db.type", "postgresql");
-
+            System.out.println("DB TYPE: " + currentDbType);
+            System.out.println("POSTGRES URL: " + postgresqlUrl);
+            System.out.println("POSTGRES USER: " + postgresqlUser);
+            System.out.println("POSTGRES PASSWORD: " + postgresqlPassword);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Не удалось загрузить конфигурацию БД");
@@ -53,7 +56,27 @@ public class DatabaseConnection {
             } catch (ClassNotFoundException e) {
                 throw new SQLException("PostgreSQL driver not found", e);
             }
-            return DriverManager.getConnection(postgresqlUrl, postgresqlUser, postgresqlPassword);
+            System.out.println("TRYING POSTGRES CONNECTION");
+            System.out.println(postgresqlUrl);
+            System.out.println(postgresqlUser);
+            System.out.println(postgresqlPassword);
+            try {
+                Connection conn = DriverManager.getConnection(
+                        postgresqlUrl,
+                        postgresqlUser,
+                        postgresqlPassword
+                );
+
+                System.out.println("POSTGRES CONNECTED SUCCESSFULLY");
+
+                return conn;
+
+            } catch (SQLException e) {
+                System.out.println("POSTGRES CONNECTION ERROR:");
+                e.printStackTrace();
+
+                throw e;
+            }
 
         } else if (currentDbType.equals("sqlserver")) {
             try {

@@ -1,4 +1,4 @@
-=
+
 
 -- 1. Производители
 CREATE TABLE manufacturers (
