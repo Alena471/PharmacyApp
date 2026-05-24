@@ -323,9 +323,14 @@ public class DatabaseService {
 
     public static List<SaleReportItem> getSalesReport(LocalDate startDate, LocalDate endDate) throws SQLException {
         List<SaleReportItem> list = new ArrayList<>();
-        String sql = "SELECT s.sale_id, s.sale_date::date, m.name as medicine_name, " +
+        String sql = "SELECT s.sale_id, s.sale_date::date, " +
+                "e.first_name || ' ' || e.last_name as employee_name, " +
+                "COALESCE(c.first_name || ' ' || c.last_name, 'Аноним') as customer_name, " +
+                "m.name as medicine_name, " +
                 "si.quantity, si.price, (si.quantity * si.price) as total " +
                 "FROM sales s " +
+                "JOIN employees e ON s.employee_id = e.employee_id " +
+                "LEFT JOIN customers c ON s.customer_id = c.customer_id " +
                 "JOIN sale_items si ON s.sale_id = si.sale_id " +
                 "JOIN batches b ON si.batch_id = b.batch_id " +
                 "JOIN medicines m ON b.medicine_id = m.medicine_id " +
@@ -341,6 +346,8 @@ public class DatabaseService {
                 list.add(new SaleReportItem(
                         rs.getInt("sale_id"),
                         rs.getDate("sale_date").toLocalDate(),
+                        rs.getString("employee_name"),
+                        rs.getString("customer_name"),
                         rs.getString("medicine_name"),
                         rs.getInt("quantity"),
                         rs.getDouble("price"),

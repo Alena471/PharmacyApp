@@ -601,20 +601,35 @@ public class Main extends Application {
         Button btnReport = new Button("Показать продажи");
 
         TableView<SaleReportItem> reportTable = new TableView<>();
-        TableColumn<SaleReportItem, Integer> saleIdCol = new TableColumn<>("№ продажи");
+
+        TableColumn<SaleReportItem, Integer> saleIdCol = new TableColumn<>("№ чека");
         saleIdCol.setCellValueFactory(new PropertyValueFactory<>("saleId"));
+
         TableColumn<SaleReportItem, LocalDate> dateCol = new TableColumn<>("Дата");
         dateCol.setCellValueFactory(new PropertyValueFactory<>("saleDate"));
+
+        // НОВЫЕ КОЛОНКИ
+        TableColumn<SaleReportItem, String> employeeCol = new TableColumn<>("Продавец");
+        employeeCol.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
+
+        TableColumn<SaleReportItem, String> customerCol = new TableColumn<>("Покупатель");
+        customerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+
         TableColumn<SaleReportItem, String> medicineCol = new TableColumn<>("Лекарство");
         medicineCol.setCellValueFactory(new PropertyValueFactory<>("medicineName"));
+
         TableColumn<SaleReportItem, Integer> qtyCol = new TableColumn<>("Кол-во");
         qtyCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
         TableColumn<SaleReportItem, Double> priceCol = new TableColumn<>("Цена");
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+
         TableColumn<SaleReportItem, Double> totalCol = new TableColumn<>("Сумма");
         totalCol.setCellValueFactory(new PropertyValueFactory<>("total"));
 
-        reportTable.getColumns().addAll(saleIdCol, dateCol, medicineCol, qtyCol, priceCol, totalCol);
+        // Добавляем ВСЕ колонки (включая новые)
+        reportTable.getColumns().addAll(saleIdCol, dateCol, employeeCol, customerCol,
+                medicineCol, qtyCol, priceCol, totalCol);
 
         Label totalSumLabel = new Label("Общая сумма: 0.00 руб");
 
@@ -643,7 +658,6 @@ public class Main extends Application {
         tab.setContent(vbox);
         tabPane.getTabs().add(tab);
     }
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
